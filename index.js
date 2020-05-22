@@ -38,7 +38,13 @@ app.get("/auth", login.auth());
 app.get("/callback", login.callback(
     (req, res, next, token_response) => {
         // 認証フロー成功時
-        res.json(token_response);
+        //res.json(token_response);
+        // 認証フロー成功時
+        //ref: https://developers.line.me/ja/docs/line-login/overview/
+        login.get_friendship_status(token_response.access_token).then((response) => {
+          res.json(response);
+          //{"friendFlag": true} //友だちになっていなければfalse
+        })
     },(req, res, next, error) => {
         // 認証フロー失敗時
         res.status(400).json(error);
